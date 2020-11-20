@@ -81,6 +81,11 @@ const OrderScreen = ({ match, history }) => {
 		dispatch(payOrder(orderId, paymentResult));
 	};
 
+	const paymentHandler = () => {
+		console.log(order);
+		dispatch(payOrder(order));
+	};
+
 	const deliverHandler = () => {
 		dispatch(deliverOrder(order));
 	};
@@ -195,16 +200,19 @@ const OrderScreen = ({ match, history }) => {
 									<Col>${order.totalPrice}</Col>
 								</Row>
 							</ListGroup.Item>
-							{!order.isPaid && (
+							{!order.isPaid && userInfo.isAdmin && (
 								<ListGroup.Item>
 									{loadingPay && <Loader />}
 									{!sdkReady ? (
 										<Loader />
 									) : (
-										<PayPalButton
-											amount={order.totalPrice}
-											onSuccess={successPaymentHandler}
-										/>
+										<Button
+											type="button"
+											className="btn btn-block"
+											onClick={paymentHandler}
+										>
+											Mark as Paid
+										</Button>
 									)}
 								</ListGroup.Item>
 							)}
