@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
+import Product from "../models/productModel.js";
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -59,7 +60,7 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
 	const order = await Order.findById(req.params.id);
-	console.log(req, res);
+
 	if (order) {
 		order.isPaid = true;
 		order.paidAt = Date.now();
@@ -71,20 +72,42 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 		// };
 
 		const updatedOrder = await order.save();
-		console.log(req, res);
+
 		res.json(updatedOrder);
 	} else {
 		res.status(404);
-		throw new Error("Order not found");
-		console.log(req, res);
+		console.error("Order not found");
 	}
 });
+
+//Attempt to update product quantity
+// const updateProductQuantity = asyncHandler(async (req, res) => {
+// 	const product = await Product.findById(req.orderItems._id);
+
+// 	if (product) {
+
+// 		const updatedProduct = await product.save();
+// 		res.json(updatedProduct);
+// 	} else {
+// 		res.status(404);
+// 		throw new Error("Product not found");
+// 	}
+// });
 
 // @desc    Update order to delivered
 // @route   GET /api/orders/:id/deliver
 // @access  Private/Admin
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
 	const order = await Order.findById(req.params.id);
+	const orderItems = order.orderItems;
+	orderItems.forEach((i) => {
+		const product = i.product;
+		const name = i.name;
+		const qty = i.qty;
+		console.info(name, "ID:", product, "Reduce By:", qty);
+	});
+
+	// const updatedProduct = await Product.save();
 
 	if (order) {
 		order.isDelivered = true;
