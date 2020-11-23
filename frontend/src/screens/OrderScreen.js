@@ -67,12 +67,12 @@ const OrderScreen = ({ match, history }) => {
 			dispatch({ type: ORDER_PAY_RESET });
 			dispatch({ type: ORDER_DELIVER_RESET });
 			dispatch(getOrderDetails(orderId));
-		} else if (!order.isPaid) {
-			if (!window.paypal) {
-				addPayPalScript();
-			} else {
-				setSdkReady(true);
-			}
+			// } else if (!order.isPaid) {
+			// 	if (!window.paypal) {
+			// 		addPayPalScript();
+			// 	} else {
+			// 		setSdkReady(true);
+			// 	}
 		}
 	}, [dispatch, orderId, successPay, successDeliver, order]);
 
@@ -202,18 +202,18 @@ const OrderScreen = ({ match, history }) => {
 							</ListGroup.Item>
 							{!order.isPaid && userInfo.isAdmin && (
 								<ListGroup.Item>
-									{loadingPay && <Loader />}
+									{/* {loadingPay && <Loader />}
 									{!sdkReady ? (
 										<Loader />
-									) : (
-										<Button
-											type="button"
-											className="btn btn-block"
-											onClick={paymentHandler}
-										>
-											Mark as Paid
-										</Button>
-									)}
+									) : ( */}
+									<Button
+										type="button"
+										className="btn btn-block"
+										onClick={paymentHandler}
+									>
+										Mark as Paid
+									</Button>
+									{/* )} */}
 								</ListGroup.Item>
 							)}
 							{loadingDeliver && <Loader />}
