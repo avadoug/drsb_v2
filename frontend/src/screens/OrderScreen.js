@@ -190,13 +190,18 @@ const OrderScreen = ({ match, history }) => {
 							</ListGroup.Item>
 							{!order.isPaid && userInfo.isAdmin && (
 								<ListGroup.Item>
-									<Button
-										type="button"
-										className="btn btn-block"
-										onClick={paymentHandler}
-									>
-										Mark as Paid
-									</Button>
+									{loadingPay && <Loader />}
+									{!sdkReady ? (
+										<Loader />
+									) : (
+										<Button
+											type="button"
+											className="btn btn-block"
+											onClick={paymentHandler}
+										>
+											Mark as Paid
+										</Button>
+									)}
 								</ListGroup.Item>
 							)}
 							{loadingDeliver && <Loader />}
