@@ -15,11 +15,20 @@ h2 {
   font-size: 1.4rem;
   padding: 0.5rem 0;
 }
-
+.rating{
+  background: #66464608;
+}
 .rating span {
   margin: 0.1rem;
+ color:white;
 }
+.carousel-item.active{
+  background:url('./components/images/bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 
+}
 /* carousel */
 .carousel-item-next,
 .carousel-item-prev,
@@ -31,7 +40,13 @@ h2 {
   top: 0;
   color:currentColor;
 }
+.carousel.slide{
+  background:url('./components/images/bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 
+}
 
 
 .carousel img {
@@ -41,6 +56,7 @@ h2 {
   border-radius: 50%;
   margin-left: auto;
   margin-right: auto;
+
 }
 .carousel a {
   margin: 0 auto;

@@ -38,6 +38,12 @@ const Layout = () => {
 				</li>
 				<li className="nav-item" id="products-submenu">
 					<Link to="/" className="nav-link">
+						<Home />
+						<span className="link-text">Home</span>
+					</Link>
+				</li>
+				<li className="nav-item" id="products-submenu">
+					<Link to="/products" className="nav-link">
 						<Fire />
 						<span className="link-text">Products</span>
 					</Link>

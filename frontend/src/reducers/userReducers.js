@@ -6,6 +6,10 @@ import {
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
   USER_LIST_FAIL,
+  CONTACT_LIST_REQUEST,
+  CONTACT_LIST_SUCCESS,
+  CONTACT_LIST_FAIL,
+  CONTACT_LIST_RESET,
   USER_LIST_RESET,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -14,12 +18,18 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_CONTACT_FAIL,
+  USER_CONTACT_REQUEST,
+  USER_CONTACT_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  CONTACT_DELETE_REQUEST,
+  CONTACT_DELETE_SUCCESS,
+  CONTACT_DELETE_FAIL,
   USER_UPDATE_RESET,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
@@ -52,6 +62,48 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: false, error: action.payload }
     case USER_LOGOUT:
       return {}
+    default:
+      return state
+  }
+}
+
+export const userContactReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_CONTACT_REQUEST:
+      return { loading: true }
+    case USER_CONTACT_SUCCESS:
+      return { loading: false, message: action.payload }
+    case USER_CONTACT_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+
+export const contactListReducer = (state = { contact: [] }, action) => {
+  switch (action.type) {
+    case CONTACT_LIST_REQUEST:
+      return { loading: true }
+    case CONTACT_LIST_SUCCESS:
+      return { loading: false, contact: action.payload }
+    case CONTACT_LIST_FAIL:
+      return { loading: false, error: action.payload }
+    case CONTACT_LIST_RESET:
+      return { contact: [] }
+    default:
+      return state
+  }
+}
+
+export const contactDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CONTACT_DELETE_REQUEST:
+      return { loading: true }
+    case CONTACT_DELETE_SUCCESS:
+      return { loading: false, success: true }
+    case CONTACT_DELETE_FAIL:
+      return { loading: false, error: action.payload }
     default:
       return state
   }

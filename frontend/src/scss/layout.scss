@@ -44,6 +44,7 @@
   color: $icon;
   min-width: 2rem;
   margin: 0 1.5rem;
+  width: 2rem;
 }
 /* Small screens*/
 @media only screen and (max-width: 600px) {
@@ -56,6 +57,8 @@
     width: 100vw;
     height: 5rem;
     z-index: 1;
+    margin:0;
+    padding:0;
   }
 
   .logo {
@@ -67,11 +70,16 @@
   }
 
   .nav-link {
-    justify-content: center;
+    justify-content: space-around;
     width:100%;
     vertical-align: center;
+    margin:0;
+
   }
-  
+  .nav-item{
+    
+    margin:0;
+  }
   ul#submenu li {
   	  display: none;
   }

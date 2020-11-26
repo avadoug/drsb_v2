@@ -5,7 +5,6 @@ import { ReactComponent as Moon } from "./Icons/Moon.svg";
 export default function DarkMode() {
 	const [darkMode, setDarkMode] = useState(false);
 	const body = document.body;
-
 	function setPreference() {
 		const preference = localStorage.getItem("prefers");
 		if (preference) {
@@ -14,11 +13,13 @@ export default function DarkMode() {
 	}
 	function toggle() {
 		if (darkMode === !true) {
-			body.classList.replace("dark", "Light");
+			body.classList.replace("dark", "light");
+			
 			localStorage.setItem("prefers", "light");
 			setDarkMode(true);
 		} else {
 			body.classList.replace("light", "dark");
+		
 			localStorage.setItem("prefers", "dark");
 			setDarkMode(false);
 		}

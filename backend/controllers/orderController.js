@@ -1,6 +1,19 @@
 import asyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
 import Product from "../models/productModel.js";
+import nodemailer from 'nodemailer';
+
+export const paymentInstructions = asyncHandler(async(req,res)=>{s
+	res.status(200)
+	}
+)
+
+
+
+
+
+
+
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -31,7 +44,110 @@ const addOrderItems = asyncHandler(async (req, res) => {
 			shippingPrice,
 			totalPrice,
 		});
+		function sendConfirmation(){
+			
+			const content =orderItems.map(function(i){
+				return `<li>${i.qty} of ${i.name}</li>`
+			}).join('')
+			const name = 'Orders';
+			const email ='no-reply@dankrealmseedbank.com';
+			const add= order.shippingAddress;
+			const address =`${add.address} | ${add.postalCode} | ${add.country}`
+			const Sender = process.env.MAIL_SENDER;
+			const Target = process.env.MAIL_RECIPIENT
+			const Password = process.env.MAIL_PASSWORD;
+			const MailHost = process.env.MAIL_HOST;
 
+			const transporter = nodemailer.createTransport({
+				port: 465,               
+				host: MailHost,
+				auth: {
+						user: Sender,
+						pass: Password
+					},
+				secure: true,
+				});
+			
+			
+			const mailData = {
+				from: `"${name}" <${Sender}>`,
+				replyTo:email,  // sender address
+			to: Target,   // list of receivers
+			subject: `Message from ${name}`,
+			
+			html: `<h1>${req.user.name}</h1> <h2> Just placed an order for</h2> <br /> <ul>${content}</ul> <br /><p> Total Price:$${totalPrice}</p>
+			<p>Payment Selection:${paymentMethod}</p>
+			<h2>Address: ${address}</h2>`,
+			};
+			
+			transporter.sendMail(mailData, function (err, info) {
+				if(err)
+				console.log(err)
+				else
+				console.log(info);
+			 })};
+		
+			 function sendInstructions(){
+				const paypal = process.env.PAYPAL_INFO;
+				const venmo = process.env.VENMO_INFO;
+				const bitcoin = process.env.BITCOIN_INFO;
+				const cashapp = process.env.CASHAPP_INFO;
+				 
+				function getInstructions(){
+					if(order.paymentMethod ==="PayPal"){
+						return (paypal);
+					}
+					if(order.paymentMethod ==="Venmo"){
+						return (venmo);
+					}
+					if(order.paymentMethod ==="BitCoin"){
+						return (bitcoin);
+					}
+					if(order.paymentMethod ==="CashApp"){
+						return (cashapp);
+					}
+					console.log('')
+				}
+				const name= 'Payment Instructions'
+				const email ='no-reply@dankrealmseedbank.com';
+				const Sender = process.env.MAIL_SENDER;
+				const Target = process.env.MAIL_RECIPIENT
+				const Password = process.env.MAIL_PASSWORD;
+				const MailHost = process.env.MAIL_HOST;
+				const user = req.user.email
+				const transporter = nodemailer.createTransport({
+					port: 465,               
+					host: MailHost,
+					auth: {
+							user: Sender,
+							pass: Password
+						},
+					secure: true,
+					});
+				
+					
+	
+				const mailData = {
+					
+					from: `"${name}" <${Sender}>`,
+					replyTo:email,  // sender address
+				to: user,   // list of receivers
+				subject: `Payment Instructions for order ${order._id}`,
+				
+				html:`<h2>You have selected to pay with</h2> <h1>${order.paymentMethod}</h1> <br/> <p>To complete your order, send $${totalPrice} to: <br /> ${getInstructions()} <br />Then keep an eye on your account for fulfillment status` 
+				};
+				
+				transporter.sendMail(mailData, function (err, info) {
+					if(err)
+					console.log(err)
+					else
+					console.log(info);
+				 })};
+	 
+		sendConfirmation();
+		
+				sendInstructions();
+	
 		const createdOrder = await order.save();
 
 		res.status(201).json(createdOrder);
