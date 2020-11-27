@@ -6,6 +6,8 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
+import { logout } from "../actions/userActions";
+
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 const ProfileScreen = ({ location, history }) => {
@@ -44,6 +46,16 @@ const ProfileScreen = ({ location, history }) => {
     }
   }, [dispatch, history, userInfo, user, success])
 
+
+ 
+	
+	const logoutHandler = () => {
+		dispatch(logout());
+	};
+
+
+
+
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
@@ -57,6 +69,10 @@ const ProfileScreen = ({ location, history }) => {
     <Row>
       <Col md={3}>
         <h2>User Profile</h2>
+        <Button onClick={logoutHandler} className='btn-sm' variant='light'>
+        Log Out
+                      </Button>
+        
         {message && <Message variant='danger'>{message}</Message>}
         {}
         {success && <Message variant='success'>Profile Updated</Message>}
