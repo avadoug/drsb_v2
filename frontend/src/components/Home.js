@@ -1,18 +1,25 @@
 import React from "react";
 import { Route, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import SearchBox from "./SearchBox";
-
+import Hero from './Hero'
+import {Spring, config} from 'react-spring/renderprops'
 import "../scss/home.scss";
 
 const Home = () => {
 
 
 	return (
-	<div>
+        <Spring config={{duration: 1000}} from={{ opacity: 0 }} to={{ opacity: 1, marginTop: 0 }}  >
+
+	{props => <div style={props} className="home">
         <h1>Dank Realm Seed Bank</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </div>
+        <Hero />
+        <p>We are Industry leading professionals in the Cannabis Seeds Market. Seeking out only the most sought after and best performing cultivars, we guarantee you'll love our product. </p>
+        <h2>Our Mission</h2>
+        <p>Our Mission is to share the ability to grow the most carefully selected genetics there are available, without breaking the bank</p>
+
+        <p>When it comes to YOUR Grow, give your self a head start and use Dank Realm Seed Bank Seeds!</p>
+    </div>}
+    </Spring>
 	);
 };
 
