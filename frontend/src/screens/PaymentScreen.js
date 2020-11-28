@@ -15,8 +15,10 @@ const PaymentScreen = ({ history }) => {
 	}
 
 	const [paymentMethod, setPaymentMethod] = useState("");
-
 	const dispatch = useDispatch();
+
+
+
 
 	const submitHandler = (e) => {
 		if(paymentMethod === ''){
@@ -36,13 +38,17 @@ const PaymentScreen = ({ history }) => {
 	return (
 		<FormContainer>
 			<CheckoutSteps step1 step2 step3 />
+		
 			<h1>Payment Method</h1>
 			<p>Select a payment method from the options below, and payment instructions for the payment method of your choice will be E-Mailed to you!</p>
 			<Form onSubmit={submitHandler}>
 				<Form.Group>
 					<Form.Label as="legend">Select Method</Form.Label>
 					<Col>
-						<Form.Check
+
+
+					
+						{/* <Form.Check
 							type="radio"
 							label="PayPal"
 							id="PayPal"
@@ -50,7 +56,7 @@ const PaymentScreen = ({ history }) => {
 							value="PayPal"
 							
 							onChange={(e) => setPaymentMethod(e.target.value)}
-						></Form.Check>
+						></Form.Check> */}
 						<Form.Check
 							type="radio"
 							label="Venmo"
@@ -82,6 +88,7 @@ const PaymentScreen = ({ history }) => {
 					Continue
 				</Button>
 			</Form>
+			
 		</FormContainer>
 	);
 };

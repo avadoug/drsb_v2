@@ -5,81 +5,79 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
-import {
-  listProducts,
-  deleteProduct,
-  createProduct,
-} from '../actions/productActions'
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
-const ProductListScreen = ({ history, match }) => {
-  const pageNumber = match.params.pageNumber || 1
+import {createDiscount, listDiscounts, deleteDiscount} from '../actions/discountActions'
 
+import { DISCOUNT_CREATE_RESET } from '../constants/discountConstants'
+
+const DiscountListScreen = ({ history, match }) => {
+  
   const dispatch = useDispatch()
 
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products, page, pages } = productList
+  const discountList = useSelector((state) => state.discountList)
+  const { loading, error, discounts } = discountList
 
-  const productDelete = useSelector((state) => state.productDelete)
+
+
+  const discountDelete = useSelector((state) => state.discountDelete)
   const {
     loading: loadingDelete,
     error: errorDelete,
     success: successDelete,
-  } = productDelete
+  } = discountDelete
 
-  const productCreate = useSelector((state) => state.productCreate)
+  const discountCreate = useSelector((state) => state.discountCreate)
   const {
     loading: loadingCreate,
     error: errorCreate,
     success: successCreate,
-    product: createdProduct,
-  } = productCreate
+    discount: createdDiscount,
+  } = discountCreate
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
-    dispatch({ type: PRODUCT_CREATE_RESET })
+    dispatch({ type: DISCOUNT_CREATE_RESET })
 
     if (!userInfo || !userInfo.isAdmin) {
       history.push('/login')
     }
 
     if (successCreate) {
-      history.push(`/admin/product/${createdProduct._id}/edit`)
+      history.push(`/admin/discount/${createdDiscount._id}/edit`)
     } else {
-      dispatch(listProducts('', pageNumber))
+      dispatch(listDiscounts())
     }
   }, [
     dispatch,
-    history,
     userInfo,
     successDelete,
     successCreate,
-    createdProduct,
-    pageNumber,
+    createdDiscount,
   ])
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure')) {
-      dispatch(deleteProduct(id))
+      dispatch(deleteDiscount(id))
     }
   }
 
-  const createProductHandler = () => {
-    dispatch(createProduct())
+  const createDiscountHandler = () => {
+    dispatch(createDiscount())
   }
 
 
   return (
     <>
-      <Row className='align-items-center'>
+     
+       <Row className='align-items-center'>
         <Col>
-          <h1>Products</h1>
+          <h1>Discounts</h1>
         </Col>
         <Col className='text-right'>
-          <Button className='my-3' onClick={createProductHandler}>
-            <i className='fas fa-plus'></i> Create Product
+          <Button className='my-3' onClick={createDiscountHandler}>
+            <i className='fas fa-plus'></i> Create Discount
           </Button>
         </Col>
       </Row>
@@ -97,23 +95,21 @@ const ProductListScreen = ({ history, match }) => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
+                <th>Code</th>
+                <th>Amount</th>
+             
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
+              {discounts.map((discount) => (
+                <tr key={discount._id}>
+                  <td>{discount._id}</td>
+                  <td>{discount.code}</td>
+                  <td>{discount.amount}%</td>
+                 
                   <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                    <LinkContainer to={`/admin/discount/${discount._id}/edit`}>
                       <Button variant='light' className='btn-sm'>
                         <i className='fas fa-edit'></i>
                       </Button>
@@ -121,7 +117,7 @@ const ProductListScreen = ({ history, match }) => {
                     <Button
                       variant='danger'
                       className='btn-sm'
-                      onClick={() => deleteHandler(product._id)}
+                      onClick={() => deleteHandler(discount._id)}
                     >
                       <i className='fas fa-trash'></i>
                     </Button>
@@ -131,11 +127,10 @@ const ProductListScreen = ({ history, match }) => {
             </tbody>
           </Table>
       
-          <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}
     </>
   )
 }
 
-export default ProductListScreen
+export default DiscountListScreen

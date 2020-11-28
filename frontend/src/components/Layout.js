@@ -8,7 +8,7 @@ import { ReactComponent as Users } from "./Icons/Users.svg";
 import { ReactComponent as Chart } from "./Icons/Chart.svg";
 import { ReactComponent as Cart } from "./Icons/Cart.svg";
 import { ReactComponent as Home } from "./Icons/Home.svg";
-import { ReactComponent as Leaf } from "./Icons/Leaf.svg";
+import { ReactComponent as Tag } from "./Icons/Tag.svg";
 import { ReactComponent as Clipboard } from "./Icons/Clipboard.svg";
 import { ReactComponent as WeedLeaf } from "./Icons/WeedLeaf.svg";
 import { logout } from "../actions/userActions";
@@ -84,6 +84,12 @@ const Layout = () => {
 								<Link to="/admin/productlist" className="nav-link">
 									<Chart />
 									<span className="link-text">Inventory</span>
+								</Link>
+							</li>
+							<li className="nav-item" id="products-submenu">
+								<Link to="/admin/discountlist" className="nav-link">
+									<Tag />
+									<span className="link-text">Discounts</span>
 								</Link>
 							</li>
 							<li className="nav-item" id="products-submenu">

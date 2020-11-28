@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useState , useEffect} from "react";
+import FormContainer from "../components/FormContainer";
+
 import { Link } from 'react-router-dom'
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Form, Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
+import axios from "axios";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
+  const [amountOff, setAmountOff] = useState(0)
 
   const cart = useSelector((state) => state.cart)
 
@@ -29,15 +33,39 @@ const PlaceOrderScreen = ({ history }) => {
   cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
   cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
   cart.totalPrice = (
-    Number(cart.itemsPrice) +
+    (Number(cart.itemsPrice) +
     Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
+    Number(cart.taxPrice))    
   ).toFixed(2)
-
+  if (amountOff){
+    cart.itemsPrice = cart.itemsPrice - (cart.itemsPrice * (amountOff/100)) 
+    cart.itemsPrice =(Number(cart.itemsPrice).toFixed(2))
+    cart.totalPrice = (
+      (Number(cart.itemsPrice) +
+      Number(cart.shippingPrice) +
+      Number(cart.taxPrice))    
+    ).toFixed(2)
+  }
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
+	const [discount, setDiscount] = useState('')
+
+
+  const submitDiscountHandler = (e) =>{
+		e.preventDefault()
+		if (discount){
+			axios.get(`/api/discounts/${discount}`)
+			.then((res)=>{
+        setAmountOff(res.data)
+        alert('Discount Added!')
+			}).catch((err)=>{
+				console.error(err)
+			})
+		}
+	}
 
   useEffect(() => {
+   
     if (success) {
       history.push(`/order/${order._id}`)
       dispatch({ type: USER_DETAILS_RESET })
@@ -45,7 +73,7 @@ const PlaceOrderScreen = ({ history }) => {
     }
     // eslint-disable-next-line
   }, [history, success])
-
+  
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
@@ -108,8 +136,26 @@ const PlaceOrderScreen = ({ history }) => {
                           {item.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
+                      
                     </ListGroup.Item>
                   ))}
+                  <FormContainer>
+              <Form onSubmit={submitDiscountHandler}>
+                <h2>Discount Code</h2>
+                  <Form.Group controlId='discount'>
+                    <Form.Label>Have a code? Enter it Below...</Form.Label>
+                    <Form.Control
+                      type='text'
+                      placeholder='Enter Code'
+                      value={discount}
+                      onChange={(e) => setDiscount(e.target.value)}
+                    ></Form.Control>
+                    </Form.Group>
+                    <Button type='submit' variant='primary'>
+                        Apply Code
+                      </Button>
+                    </Form>
+               </FormContainer>
                 </ListGroup>
               )}
             </ListGroup.Item>
@@ -117,10 +163,12 @@ const PlaceOrderScreen = ({ history }) => {
         </Col>
         <Col md={4}>
           <Card>
+       
             <ListGroup variant='flush'>
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
+              
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
