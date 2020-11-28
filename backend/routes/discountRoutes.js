@@ -8,7 +8,7 @@ import {
   updateDiscount,
   getDiscountByCode,
  
-} from '../controllers/DiscountController.js'
+} from '../controllers/discountController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
 router.route('/').get(getDiscounts).post(protect,  createDiscount)
