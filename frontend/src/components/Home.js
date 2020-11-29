@@ -3,6 +3,7 @@ import { Route, Link } from "react-router-dom";
 import Hero from './Hero'
 import {Spring, config} from 'react-spring/renderprops'
 import "../scss/home.scss";
+import { Button } from "react-bootstrap";
 
 const Home = () => {
 
@@ -18,6 +19,12 @@ const Home = () => {
         <p>Our Mission is to share the ability to grow the most carefully selected genetics there are available, without breaking the bank</p>
 
         <p>When it comes to YOUR Grow, give your self a head start and use Dank Realm Seed Bank Seeds!</p>
+        <h2>Have a Question for us before you buy?</h2>
+        <Link to={'/contact'}>
+                <Button>
+                        Contact Us
+                </Button>
+        </Link>
     </div>}
     </Spring>
 	);
