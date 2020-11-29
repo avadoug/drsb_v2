@@ -93,17 +93,18 @@ const OrderScreen = ({ match, history }) => {
 								{order.shippingAddress.postalCode},{" "}
 								{order.shippingAddress.country}
 							</p>
+							<h2>Order Status:</h2>
 							{order.isDelivered ? (
 								<Message variant="success">
-									Delivered on {order.deliveredAt}
+									Fulfilled on {order.deliveredAt}
 								</Message>
 							) : (
-								<Message variant="danger">Not Delivered</Message>
+								<Message variant="danger">Processing</Message>
 							)}
 						</ListGroup.Item>
 
 						<ListGroup.Item>
-							<h2>Payment Method</h2>
+						<h2>Payment Status:</h2>
 							<p>
 								<strong>Method: </strong>
 								{order.paymentMethod}
@@ -205,7 +206,7 @@ const OrderScreen = ({ match, history }) => {
 											className="btn btn-block"
 											onClick={deliverHandler}
 										>
-											Mark As Delivered
+											Mark As Fulfilled
 										</Button>
 									</ListGroup.Item>
 								)}

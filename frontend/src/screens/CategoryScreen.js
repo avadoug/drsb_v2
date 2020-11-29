@@ -84,6 +84,7 @@ const CategoryScreen = ({ history, match }) => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
+            </Row>
             {loading ? (
 				<Loader />
 			) : error ? (
@@ -100,29 +101,8 @@ const CategoryScreen = ({ history, match }) => {
 				
 				</>
 			)}
-            <Col md={3}>
-              <Card>
-                <ListGroup variant='flush'>
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>
-                        {/* <strong>${product.price}</strong> */}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>       
-                </ListGroup>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-            
-              <ListGroup variant='flush'>
-                
-               
-              </ListGroup>
-            </Col>
-          </Row>
+           
+         
         </>
       )}
     </>

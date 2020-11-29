@@ -43,14 +43,14 @@ const Layout = () => {
 						<span className="link-text">Home</span>
 					</Link>
 				</li>
-				<li className="nav-item" id="products-submenu">
+				<li className="nav-item dt-only" id="products-submenu">
 					<Link to="/products" className="nav-link">
 						<Fire />
 						<span className="link-text">Products</span>
 					</Link>
 				</li>
 
-				<li className="nav-item" id="products-submenu">
+				<li className="nav-item " id="products-submenu">
 					<Link to="/categories" className="nav-link">
 						<Leaf />
 						<span className="link-text">Breeders</span>
@@ -88,10 +88,16 @@ const Layout = () => {
 									<span className="link-text">Users</span>
 								</Link>
 							</li>
-							<li className="nav-item" id="products-submenu">
+							<li className="nav-item " id="products-submenu">
 								<Link to="/admin/productlist" className="nav-link">
 									<Chart />
 									<span className="link-text">Inventory</span>
+								</Link>
+							</li>
+							<li className="nav-item" id="products-submenu">
+								<Link to="/admin/categorylist" className="nav-link">
+									<Chart />
+									<span className="link-text">Breeder List</span>
 								</Link>
 							</li>
 							<li className="nav-item" id="products-submenu">

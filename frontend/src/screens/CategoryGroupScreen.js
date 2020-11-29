@@ -35,7 +35,7 @@ const CategoryGroupScreen = ({ match }) => {
 					Go Back
 				</Link>
 			)}
-			<h1>Latest Products</h1>
+			<h1>Breeders</h1>
 			<Route render={({ history }) => <SearchBox history={history} />} />
 			{loading ? (
 				<Loader />

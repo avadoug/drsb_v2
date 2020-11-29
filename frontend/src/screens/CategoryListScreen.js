@@ -75,11 +75,11 @@ const CategoryListScreen = ({ history, match }) => {
     <>
       <Row className='align-items-center'>
         <Col>
-          <h1>Products</h1>
+          <h1>Breeders</h1>
         </Col>
         <Col className='text-right'>
           <Button className='my-3' onClick={createCategoryHandler}>
-            <i className='fas fa-plus'></i> Create Category
+            <i className='fas fa-plus'></i> Create Breeder Category
           </Button>
         </Col>
       </Row>

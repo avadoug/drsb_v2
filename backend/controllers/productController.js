@@ -41,7 +41,7 @@ const getProductById = asyncHandler(async (req, res) => {
 
 
 const getProductsByCategory = asyncHandler(async (req, res) => {
-  const product = await Product.find({brand : req.params.id})
+  const product = await Product.find({category : req.params.id})
 
   if (product) {
     console.log(req.params)
@@ -85,8 +85,7 @@ const createProduct = asyncHandler(async (req, res) => {
     price: 0,
     user: req.user._id,
     image: '/images/sample.jpg',
-    brand: '5fc2ae54934c6709287e8635',
-    category: '5fc2ae54934c6709287e8635',
+    category: null,
     countInStock: 0,
     numReviews: 0,
     description: 'Sample description',
@@ -105,7 +104,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     price,
     description,
     image,
-    brand,
     category,
     countInStock,
   } = req.body
@@ -117,7 +115,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.price = price
     product.description = description
     product.image = image
-    product.brand = brand
     product.category = category
     product.countInStock = countInStock
 

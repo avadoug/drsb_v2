@@ -28,7 +28,7 @@ const ShippingScreen = ({ history }) => {
       <h1>Shipping</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='address'>
-          <Form.Label>Address</Form.Label>
+          <Form.Label>Street Address(ex: 420 Dank Way)</Form.Label>
           <Form.Control
             type='text'
             placeholder='Enter address'
@@ -39,10 +39,10 @@ const ShippingScreen = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId='city'>
-          <Form.Label>City</Form.Label>
+          <Form.Label>City, State (ex: Phoenix, AZ)</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Enter city'
+            placeholder='Enter city/state'
             value={city}
             required
             onChange={(e) => setCity(e.target.value)}
