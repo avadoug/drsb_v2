@@ -11,6 +11,16 @@ import {
   productTopRatedReducer,
 } from './reducers/productReducers'
 
+
+import {
+  categoryListReducer,
+  categoryDetailsReducer,
+  categoryDeleteReducer,
+  categoryCreateReducer,
+  categoryUpdateReducer,
+} from './reducers/categoryReducers'
+
+
 import {
   discountListReducer,
   discountDetailsReducer,
@@ -47,6 +57,13 @@ import {
 } from './reducers/orderReducers'
 
 const reducer = combineReducers({
+  categoryList: categoryListReducer,
+  categoryDetails: categoryDetailsReducer,
+  categoryDelete: categoryDeleteReducer,
+  categoryCreate: categoryCreateReducer,
+  categoryUpdate: categoryUpdateReducer,
+
+
   productList: productListReducer,
   productDetails: productDetailsReducer,
   productDelete: productDeleteReducer,

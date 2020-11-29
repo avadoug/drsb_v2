@@ -5,7 +5,12 @@ import Home from "./components/Home";
 import Layout from "./components/Layout";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
-import ProductScreen from "./screens/ProductScreen";
+
+import CategoryScreen from "./screens/CategoryScreen";
+import CategoryListScreen from "./screens/CategoryListScreen";
+import CategoryEditScreen from "./screens/CategoryEditScreen";
+
+
 import ContactScreen from "./screens/ContactScreen";
 import ContactListScreen from "./screens/ContactListScreen";
 import CartScreen from "./screens/CartScreen";
@@ -18,11 +23,13 @@ import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
+import ProductScreen from "./screens/ProductScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
 import DiscountListScreen from "./screens/DiscountListScreen";
 import DiscountEditScreen from "./screens/DiscountEditScreen.js";
 import OrderListScreen from "./screens/OrderListScreen";
+import CategoryGroupScreen from "./screens/CategoryGroupScreen";
 
 const App = () => {
 	return (
@@ -39,6 +46,7 @@ const App = () => {
 					<Route path="/profile" component={ProfileScreen} />
 					<Route path="/contact" component={ContactScreen} />
 					<Route path="/admin/contacts" component={ContactListScreen} />
+					<Route path="/category/:id" component={CategoryScreen} />
 					<Route path="/product/:id" component={ProductScreen} />
 					<Route path="/cart/:id?" component={CartScreen} />
 					<Route path="/admin/userlist" component={UserListScreen} />					
@@ -55,6 +63,21 @@ const App = () => {
 					/>
 					<Route path="/admin/product/:id/edit" component={ProductEditScreen} />
 					
+
+					<Route
+						path="/admin/categorylist"
+						component={CategoryListScreen}
+						exact
+					/>
+					<Route
+						path="/admin/categorylist/:pageNumber"
+						component={CategoryListScreen}
+						exact
+					/>
+
+					<Route path="/admin/categories/:id/edit" component={CategoryEditScreen} />
+
+
 					<Route
 						path="/admin/discountlist"
 						component={DiscountListScreen}
@@ -78,6 +101,7 @@ const App = () => {
 						component={HomeScreen}
 						exact
 					/>
+					<Route path="/categories" component={CategoryGroupScreen} exact />
 					<Route path="/products" component={HomeScreen} exact />
 					<Route path="/" component={Home} exact />
 				</Container>

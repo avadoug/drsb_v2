@@ -39,6 +39,22 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 })
 
+
+const getProductsByCategory = asyncHandler(async (req, res) => {
+  const product = await Product.find({brand : req.params.id})
+
+  if (product) {
+    console.log(req.params)
+    res.json(product)
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
+
+
+
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 // @access  Private/Admin
@@ -54,6 +70,12 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 })
 
+
+
+
+
+
+
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
@@ -63,8 +85,8 @@ const createProduct = asyncHandler(async (req, res) => {
     price: 0,
     user: req.user._id,
     image: '/images/sample.jpg',
-    brand: 'Sample brand',
-    category: 'Sample category',
+    brand: '5fc2ae54934c6709287e8635',
+    category: '5fc2ae54934c6709287e8635',
     countInStock: 0,
     numReviews: 0,
     description: 'Sample description',
@@ -165,4 +187,5 @@ export {
   updateProduct,
   createProductReview,
   getTopProducts,
+  getProductsByCategory
 }

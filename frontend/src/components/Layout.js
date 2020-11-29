@@ -3,6 +3,7 @@ import { Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SearchBox from "./SearchBox";
 import { ReactComponent as Fire } from "./Icons/Fire.svg";
+import { ReactComponent as Leaf } from "./Icons/Leaf.svg";
 import { ReactComponent as User } from "./Icons/User.svg";
 import { ReactComponent as Users } from "./Icons/Users.svg";
 import { ReactComponent as Chart } from "./Icons/Chart.svg";
@@ -46,6 +47,13 @@ const Layout = () => {
 					<Link to="/products" className="nav-link">
 						<Fire />
 						<span className="link-text">Products</span>
+					</Link>
+				</li>
+
+				<li className="nav-item" id="products-submenu">
+					<Link to="/categories" className="nav-link">
+						<Leaf />
+						<span className="link-text">Breeders</span>
 					</Link>
 				</li>
 
