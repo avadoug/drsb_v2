@@ -14,11 +14,14 @@ const Home = () => {
 	{props => <div style={props} className="home">
         <h1>Dank Realm Seed Bank</h1>
         <Hero />
-        <p>We are Industry leading professionals in the Cannabis Seeds Market. Seeking out only the most sought after and best performing cultivars, we guarantee you'll love our product. </p>
-        <h2>Our Mission</h2>
-        <p>Our Mission is to share the ability to grow the most carefully selected genetics there are available, without breaking the bank</p>
+		
+		<p>Here at the Dank Realm Seed Bank we put a priority on Breeders who produce the highest quality souvenir cannabis seeds on the market.  </p>
 
-        <p>When it comes to YOUR Grow, give your self a head start and use Dank Realm Seed Bank Seeds!</p>
+<h2>Our Mission </h2>
+
+<p>Our Mission is to find and share the most exotic, potent and quality cannabis seed souvenirs available today and make them available for the world.<p>
+       
+
         <h2>Have a Question for us before you buy?</h2>
         <Link to={'/contact'}>
                 <Button>
