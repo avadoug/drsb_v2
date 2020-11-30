@@ -57,12 +57,12 @@ const Layout = () => {
 					</Link>
 				</li>
 
-				<li className="nav-item" id="products-submenu">
+				<ul className="nav-item" id="products-submenu">
 					<Link to={"/profile"}>
 						<li className="nav-link">
 							<User />
 							{userInfo ? (
-								<ul id="submenu">
+								<ul className="nav-item" id="products-submenu">
 									<li className="nav-item">
 										<span className="link-text">{userInfo.name}</span>
 									</li>
@@ -81,7 +81,7 @@ const Layout = () => {
 						</li>
 					</Link>
 					{userInfo && userInfo.isAdmin && (
-						<ul id="submenu">
+						<ul className="submenu">
 							<li className="nav-item" id="products-submenu">
 								<Link to="/admin/userList" className="nav-link">
 									<Users />
@@ -114,7 +114,7 @@ const Layout = () => {
 							</li>
 						</ul>
 					)}
-				</li>
+				</ul>
 
 				<li className="nav-item">
 					<Link to={"/cart"} className="nav-link">

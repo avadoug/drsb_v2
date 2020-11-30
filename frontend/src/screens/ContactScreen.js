@@ -29,10 +29,11 @@ const ContactScreen = ({ location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    if (content === null) {
-      setMessage('Please Enter a Message!')
+    if (!content || !name || !email) {
+      setMessage('Please fill all fields!!')
     } else {
       dispatch(contact(name, email, content))
+      history.push('/')
     }
   }
 

@@ -83,6 +83,13 @@ const ProductListScreen = ({ history, match }) => {
           <Button className='my-3' onClick={createProductHandler}>
             <i className='fas fa-plus'></i> Create Product
           </Button>
+          <LinkContainer to={'/admin/categorylist'}>
+
+    
+          <Button className='my-3' >
+            <i className='fas fa-plus'></i> Create Category
+          </Button>
+          </LinkContainer>
         </Col>
       </Row>
       {loadingDelete && <Loader />}

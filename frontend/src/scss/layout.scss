@@ -22,7 +22,9 @@
   width: 100%;
 }
 
-
+.nav-link li {
+  list-style: none;
+}
 
 .nav-link {
   cursor: pointer;
@@ -146,21 +148,26 @@
     background: $bg-secondary;
     color: $icon;
   }
-  	ul#submenu li {
+  	ul .submenu li {
   	  display: none;
-  	}
+    }
+    ul .submenu{
+      position: absolute;
+      left:15rem;
+      background: $bg-primary;
+    }
 
-  	.navbar:hover ul#submenu li {
+  	.navbar:hover ul .submenu li {
   	  display: block;
   	  color: $icon;
   	  width: 100%;
   	}
 
-  	.navbar:hover ul#submenu a.nav-link {
+  	.navbar:hover ul .submenu a.nav-link {
   	  width: 100%;
   	}
 
-  	ul#submenu {
+  	ul .submenu {
   	  width: -webkit-fill-available;
   	}
 }
