@@ -70,7 +70,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       const mailData = {
         from: `"${name}" <${Sender}>`,
         replyTo: email, // sender address
-        to: Target, // list of receivers
+        to: Sender, // list of receivers
         subject: `Message from ${name}`,
 
         html: `<h1>${req.user.name}</h1> <h2> Just placed an order for</h2> <br /> <ul>${content}</ul> <br /><p> Total Price:$${totalPrice}</p>
