@@ -1,79 +1,108 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import FormContainer from "../components/FormContainer";
 
-import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import CheckoutSteps from '../components/CheckoutSteps'
-import { createOrder } from '../actions/orderActions'
-import { ORDER_CREATE_RESET } from '../constants/orderConstants'
-import { USER_DETAILS_RESET } from '../constants/userConstants'
+import { Link } from "react-router-dom";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Card,
+} from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import CheckoutSteps from "../components/CheckoutSteps";
+import { createOrder } from "../actions/orderActions";
+import { ORDER_CREATE_RESET } from "../constants/orderConstants";
+import { USER_DETAILS_RESET } from "../constants/userConstants";
+import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
+import { updateProduct } from "../actions/productActions";
+
 import axios from "axios";
 
 const PlaceOrderScreen = ({ history }) => {
-  const dispatch = useDispatch()
-  const [amountOff, setAmountOff] = useState(0)
+  const dispatch = useDispatch();
+  const [amountOff, setAmountOff] = useState(0);
+  const [countInStock, setCountInStock] = useState(0);
 
-  const cart = useSelector((state) => state.cart)
+  const productDetails = useSelector((state) => state.productDetails);
+  const { product } = productDetails;
+
+  const cart = useSelector((state) => state.cart);
 
   if (!cart.shippingAddress.address) {
-    history.push('/shipping')
+    history.push("/shipping");
   } else if (!cart.paymentMethod) {
-    history.push('/payment')
+    history.push("/payment");
   }
   //   Calculate prices
   const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2)
-  }
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
 
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  )
-  cart.shippingPrice = 15
-  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
+  );
+  cart.shippingPrice = 15;
+  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
   cart.totalPrice = (
-    (Number(cart.itemsPrice) +
+    Number(cart.itemsPrice) +
     Number(cart.shippingPrice) +
-    Number(cart.taxPrice))    
-  ).toFixed(2)
-  if (amountOff){
-    cart.itemsPrice = cart.itemsPrice - (cart.itemsPrice * (amountOff/100)) 
-    cart.itemsPrice =(Number(cart.itemsPrice).toFixed(2))
+    Number(cart.taxPrice)
+  ).toFixed(2);
+  if (amountOff) {
+    cart.itemsPrice = cart.itemsPrice - cart.itemsPrice * (amountOff / 100);
+    cart.itemsPrice = Number(cart.itemsPrice).toFixed(2);
     cart.totalPrice = (
-      (Number(cart.itemsPrice) +
+      Number(cart.itemsPrice) +
       Number(cart.shippingPrice) +
-      Number(cart.taxPrice))    
-    ).toFixed(2)
+      Number(cart.taxPrice)
+    ).toFixed(2);
   }
-  const orderCreate = useSelector((state) => state.orderCreate)
-  const { order, success, error } = orderCreate
-	const [discount, setDiscount] = useState('')
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+  const [discount, setDiscount] = useState("");
 
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate;
 
-  const submitDiscountHandler = (e) =>{
-		e.preventDefault()
-		if (discount){
-			axios.get(`/api/discounts/${discount}`)
-			.then((res)=>{
-        setAmountOff(res.data)
-        alert('Discount Added!')
-			}).catch((err)=>{
-				console.error(err)
-			})
-		}
-	}
+  const submitDiscountHandler = (e) => {
+    e.preventDefault();
+    if (discount) {
+      axios
+        .get(`/api/discounts/${discount}`)
+        .then((res) => {
+          setAmountOff(res.data);
+          alert("Discount Added!");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
 
   useEffect(() => {
-   
-    if (success) {
-      history.push(`/order/${order._id}`)
-      dispatch({ type: USER_DETAILS_RESET })
-      dispatch({ type: ORDER_CREATE_RESET })
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+    } else {
+      setCountInStock(product.countInStock);
+      console.log("Updated!");
     }
+    if (success) {
+      history.push(`/order/${order._id}`);
+      dispatch({ type: USER_DETAILS_RESET });
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+
     // eslint-disable-next-line
-  }, [history, success])
-  
+  }, [dispatch, history, success, successUpdate]);
+
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
@@ -85,21 +114,21 @@ const PlaceOrderScreen = ({ history }) => {
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
       })
-    )
-  }
+    );
+  };
 
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
                 <strong>Address:</strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
-                {cart.shippingAddress.postalCode},{' '}
+                {cart.shippingAddress.name},{cart.shippingAddress.address},{" "}
+                {cart.shippingAddress.city} {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
               </p>
             </ListGroup.Item>
@@ -115,7 +144,7 @@ const PlaceOrderScreen = ({ history }) => {
               {cart.cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
-                <ListGroup variant='flush'>
+                <ListGroup variant="flush">
                   {cart.cartItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
@@ -136,26 +165,25 @@ const PlaceOrderScreen = ({ history }) => {
                           {item.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
-                      
                     </ListGroup.Item>
                   ))}
                   <FormContainer>
-              <Form onSubmit={submitDiscountHandler}>
-                <h2>Discount Code</h2>
-                  <Form.Group controlId='discount'>
-                    <Form.Label>Have a code? Enter it Below...</Form.Label>
-                    <Form.Control
-                      type='text'
-                      placeholder='Enter Code'
-                      value={discount}
-                      onChange={(e) => setDiscount(e.target.value)}
-                    ></Form.Control>
-                    </Form.Group>
-                    <Button type='submit' variant='primary'>
+                    <Form onSubmit={submitDiscountHandler}>
+                      <h2>Discount Code</h2>
+                      <Form.Group controlId="discount">
+                        <Form.Label>Have a code? Enter it Below...</Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter Code"
+                          value={discount}
+                          onChange={(e) => setDiscount(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button type="submit" variant="primary">
                         Apply Code
                       </Button>
                     </Form>
-               </FormContainer>
+                  </FormContainer>
                 </ListGroup>
               )}
             </ListGroup.Item>
@@ -163,12 +191,11 @@ const PlaceOrderScreen = ({ history }) => {
         </Col>
         <Col md={4}>
           <Card>
-       
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
-              
+
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
@@ -194,12 +221,12 @@ const PlaceOrderScreen = ({ history }) => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {error && <Message variant='danger'>{error}</Message>}
+                {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
-                  type='button'
-                  className='btn-block'
+                  type="button"
+                  className="btn-block"
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}
                 >
@@ -211,7 +238,7 @@ const PlaceOrderScreen = ({ history }) => {
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default PlaceOrderScreen
+export default PlaceOrderScreen;
