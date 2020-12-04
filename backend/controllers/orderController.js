@@ -151,9 +151,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
 					console.log(info);
 				 })};
 	 
-		// sendConfirmation();
+		 sendConfirmation();
 		
-		// 		sendInstructions();
+			sendInstructions();
 	
 		const createdOrder = await order.save();
 
