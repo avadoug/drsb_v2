@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FormContainer from "../components/FormContainer";
+import { ReactComponent as Bitcoin } from "../components/Icons/Bitcoin.svg";
 
 import { Link } from "react-router-dom";
 import {
@@ -26,10 +27,22 @@ const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
   const [amountOff, setAmountOff] = useState(0);
   const [countInStock, setCountInStock] = useState(0);
+  const [bitcoinPrice, setBitcoinPrice] = useState(null);
 
   const productDetails = useSelector((state) => state.productDetails);
   const { product } = productDetails;
-
+  const convertToBTC = () => {
+    axios
+      .get("https://api.coindesk.com/v1/bpi/currentprice/USD.json")
+      .then((res) => {
+        const btc = res.data.bpi.USD.rate_float;
+        setBitcoinPrice((1 / btc) * cart.totalPrice);
+        console.log(cart.bitcoinPrice);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   const cart = useSelector((state) => state.cart);
 
   if (!cart.shippingAddress.address) {
@@ -60,6 +73,7 @@ const PlaceOrderScreen = ({ history }) => {
       Number(cart.shippingPrice) +
       Number(cart.taxPrice)
     ).toFixed(2);
+    convertToBTC();
   }
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
@@ -88,6 +102,9 @@ const PlaceOrderScreen = ({ history }) => {
   };
 
   useEffect(() => {
+    if (cart.paymentMethod === "BitCoin") {
+      convertToBTC();
+    }
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
     } else {
@@ -113,6 +130,19 @@ const PlaceOrderScreen = ({ history }) => {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
+      })
+    );
+  };
+  const placeBTCOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: bitcoinPrice,
       })
     );
   };
@@ -214,25 +244,48 @@ const PlaceOrderScreen = ({ history }) => {
                   <Col>${cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Total</Col>
-                  <Col>${cart.totalPrice}</Col>
-                </Row>
-              </ListGroup.Item>
+              {cart.paymentMethod !== "BitCoin" && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Total </Col>
+                    <Col>${cart.totalPrice}</Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
+              {cart.paymentMethod === "BitCoin" && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Total in BitCoin</Col>
+                    <Col>{bitcoinPrice}</Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
               <ListGroup.Item>
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Button
-                  type="button"
-                  className="btn-block"
-                  disabled={cart.cartItems === 0}
-                  onClick={placeOrderHandler}
-                >
-                  Place Order
-                </Button>
-              </ListGroup.Item>
+              {cart.paymentMethod === "BitCoin" ? (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="btn-block"
+                    disabled={cart.cartItems === 0}
+                    onClick={placeBTCOrderHandler}
+                  >
+                    Place Order
+                  </Button>
+                </ListGroup.Item>
+              ) : (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="btn-block"
+                    disabled={cart.cartItems === 0}
+                    onClick={placeOrderHandler}
+                  >
+                    Place Order
+                  </Button>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>

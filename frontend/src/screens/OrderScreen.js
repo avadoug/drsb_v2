@@ -174,12 +174,21 @@ const OrderScreen = ({ match, history }) => {
                   <Col>${order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
-                </Row>
-              </ListGroup.Item>
+              {order.paymentMethod === "BitCoin" ? (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Total in BTC</Col>
+                    <Col>{order.totalPrice}</Col>
+                  </Row>
+                </ListGroup.Item>
+              ) : (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Total</Col>
+                    <Col>${order.totalPrice}</Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
               {!order.isPaid && userInfo.isAdmin && (
                 <ListGroup.Item>
                   {/* {loadingPay && <Loader />}

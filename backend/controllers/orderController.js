@@ -66,14 +66,22 @@ const addOrderItems = asyncHandler(async (req, res) => {
         },
         secure: true,
       });
-
+      function getTotalPrice() {
+        if (order.paymentMethod === "BitCoin") {
+          return `${order.totalPrice} BitCoin`;
+        } else {
+          return `$${order.totalPrice}`;
+        }
+      }
       const mailData = {
         from: `"${name}" <${Sender}>`,
         replyTo: email, // sender address
         to: Sender, // list of receivers
         subject: `Message from ${name}`,
 
-        html: `<h1>${req.user.name}</h1> <h2> Just placed an order for</h2> <br /> <ul>${content}</ul> <br /><p> Total Price:$${totalPrice}</p>
+        html: `<h1>${
+          req.user.name
+        }</h1> <h2> Just placed an order for</h2> <br /> <ul>${content}</ul> <br /><p> Total Price:${getTotalPrice()}</p>
 			<p>Payment Selection:${paymentMethod}</p>
 			<h2>Address:${shippingAddress.name}, ${address}</h2>`,
       };
@@ -121,6 +129,13 @@ const addOrderItems = asyncHandler(async (req, res) => {
         secure: true,
       });
 
+      function getTotalPrice() {
+        if (order.paymentMethod === "BitCoin") {
+          return `${order.totalPrice} BitCoin`;
+        } else {
+          return `$${order.totalPrice}`;
+        }
+      }
       const mailData = {
         from: `"${name}" <${Sender}>`,
         replyTo: email, // sender address
@@ -129,7 +144,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
         html: `<h2>You have selected to pay with</h2> <h1>${
           order.paymentMethod
-        }</h1> <br/> <p>To complete your order, send $${totalPrice} to: <br /> ${getInstructions()} <br />Then keep an eye on your account for fulfillment status`,
+        }</h1> <br/> <p>To complete your order, send ${getTotalPrice()} to: <br /> ${getInstructions()} <br />Then keep an eye on your account for fulfillment status`,
       };
 
       transporter.sendMail(mailData, function (err, info) {
