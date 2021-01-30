@@ -5,7 +5,16 @@ import colors from "colors";
 import morgan from "morgan";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
+app.enable("trust proxy");
 
+function secure(req, res, next) {
+  if (process.env.NODE_ENV != "development" && !req.secure) {
+    return res.redirect("https://" + req.headers.host + req.url);
+  }
+  next();
+}
+
+app.use(secure);
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
@@ -25,7 +34,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 
-app.use(function(request, response, next) {
 
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
