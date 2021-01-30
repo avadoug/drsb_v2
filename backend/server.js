@@ -27,12 +27,6 @@ app.use(express.json());
 
 app.use(function(request, response, next) {
 
-if (process.env.NODE_ENV != 'development' && !request.secure) {
-   return response.redirect("https://" + request.headers.host + request.url) } next()})
-}
-  next()
-})
-
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/contact", contactRoutes);
